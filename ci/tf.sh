@@ -14,6 +14,8 @@ terraform init -upgrade > /tmp/terraform.log 2>&1
 # We first run a targeted apply to just the module that creates the Vault server
 # but only need to do this once
 # and we'll know if it's done if we can't download the encrypted token
+# IMPORTANT: the first run needs to be done from a non-CI identity
+# as it requires giving elevated privileges to the CI GSA
 get_token || (terraform apply -target=module.vault -auto-approve >> /tmp/terraform.log 2>&1 && get_token)
 
 # fetch the token from KMS and store it in VAULT_TOKEN

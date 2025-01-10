@@ -35,8 +35,12 @@ provider "docker" {
   }
 }
 
+locals {
+  ci_gsa = "github@${var.project}.iam.gserviceaccount.com"
+}
+
 module "vault" {
-  source = "git::https://github.com/LibOps/terraform-vault-cloudrun?ref=171626a2fb1ddaa47e700b17ecbad30b7a9ae082"
+  source = "git::https://github.com/LibOps/terraform-vault-cloudrun?ref=4bc9f15e72be3ae81000087b7f226f40b0714329"
   providers = {
     docker      = docker
     google      = google
@@ -49,4 +53,18 @@ module "vault" {
 
 provider "vault" {
   address = module.vault.vault-url
+}
+
+resource "google_artifact_registry_repository_iam_member" "member" {
+  project = module.vault.repo[0].project
+  location = module.vault.repo[0].location
+  repository = module.vault.repo[0].name
+  role = "roles/artifactregistry.writer"
+  member = "serviceAccount:${local.ci_gsa}"
+}
+
+resource "google_storage_bucket_iam_member" "member" {
+  bucket = module.vault.key_bucket
+  role = "roles/storage.objectViewer"
+  member = "serviceAccount:${local.ci_gsa}"
 }
