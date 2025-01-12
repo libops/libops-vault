@@ -1,5 +1,5 @@
 resource "vault_mount" "kv_v1" {
-  path = "kv-v1"
+  path = "secret"
   type = "kv"
 
   options = {

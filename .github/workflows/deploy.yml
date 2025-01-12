@@ -42,19 +42,38 @@ jobs:
         username: 'oauth2accesstoken'
         password: '${{ steps.auth.outputs.access_token }}'
 
+    - id: 'id_token'
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ secrets.GCLOUD_OIDC_POOL }}
+        service_account: ${{ secrets.GSA }}
+        id_token_audience: "vault/ci"
+        token_format: 'id_token'
+        id_token_include_email: true
+
+    - name: Install vault
+      env:
+        VAULT_VERSION: 1.18.3
+      run: |
+        wget -q https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
+        unzip vault_${VAULT_VERSION}_linux_amd64.zip
+        sudo mv vault /usr/bin/
+
     - name: terraform apply
-      run: ./ci/tf.sh
       env:
         TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
         TF_VAR_region: ${{ secrets.GCLOUD_REGION }}
+        VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+      run: ./scripts/run.sh ci "${{ steps.id_token.outputs.id_token }}" > terraform.log 2>&1
 
-    - name: Upload logs as artifacts
+    - name: Upload terraform log
       if: ${{ always() }}
       uses: actions/upload-artifact@v4
       with:
-        name: terraform.log
-        path: /tmp/terraform.log
+        name: terraform.log-${{ github.sha }}
+        path: ./terraform.log
+        overwrite: true
 
     - name: cleanup
       if: ${{ always() }}
-      run: rm /tmp/terraform.log
+      run: rm terraform.log

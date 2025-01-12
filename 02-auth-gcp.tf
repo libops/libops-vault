@@ -12,7 +12,7 @@ resource "vault_gcp_auth_backend_role" "ghat" {
   token_ttl              = 300
   token_max_ttl          = 600
   token_policies = [
-    vault_policy.project-read-kv.name
+    vault_policy.policies["gcp-kv1.hcl"].name
   ]
   add_group_aliases = true
 }

@@ -30,4 +30,4 @@ export VAULT_TOKEN="$(cat root-token)"
 rm root-token root-token.enc root-token.dc
 
 # Now we can apply all of the terraform with a valid Vault token
-terraform apply -auto-approve >> /tmp/terraform.log 2>&1 
+terraform apply -auto-approve

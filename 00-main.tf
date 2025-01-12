@@ -54,17 +54,3 @@ module "vault" {
 provider "vault" {
   address = module.vault.vault-url
 }
-
-resource "google_artifact_registry_repository_iam_member" "member" {
-  project = module.vault.repo[0].project
-  location = module.vault.repo[0].location
-  repository = module.vault.repo[0].name
-  role = "roles/artifactregistry.writer"
-  member = "serviceAccount:${local.ci_gsa}"
-}
-
-resource "google_storage_bucket_iam_member" "member" {
-  bucket = module.vault.key_bucket
-  role = "roles/storage.objectViewer"
-  member = "serviceAccount:${local.ci_gsa}"
-}

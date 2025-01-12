@@ -1,11 +1,15 @@
-# allow GCP auth access to paths in the GSA's project
-# https://developer.hashicorp.com/vault/api-docs/auth/gcp#sample-payload-5
-resource "vault_policy" "project-read-kv" {
-  name = "kv-v1-per-project"
+locals {
+  policy_files = fileset("policies", "*.hcl")
+}
 
-  policy = <<-EOT
-    path "kv-v1/{{identity.entity.metadata.project_id}}/*" {
-      capabilities = ["create", "read", "update", "delete", "list"]
-    }
-  EOT
+data "local_file" "policy_docs" {
+  for_each = local.policy_files
+  filename = "policies/${each.value}"
+}
+
+resource "vault_policy" "policies" {
+  for_each = data.local_file.policy_docs
+
+  name   = basename(replace(each.value.filename, ".hcl", ""))
+  policy = each.value.content
 }
