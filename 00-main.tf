@@ -28,6 +28,10 @@ provider "google" {
   project = var.project
 }
 
+provider "google-beta" {
+  project = var.project
+}
+
 provider "docker" {
   registry_auth {
     address     = "us-docker.pkg.dev"
