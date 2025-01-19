@@ -10,7 +10,7 @@ resource "vault_gcp_auth_backend_role" "ghat" {
   bound_service_accounts = ["ghat-cr@libops-ghat.iam.gserviceaccount.com"]
   bound_projects         = ["libops-ghat"]
   token_ttl              = 300
-  token_max_ttl          = 600
+  token_max_ttl          = 900
   token_policies = [
     vault_policy.policies["gcp-kv1.hcl"].name
   ]
