@@ -44,7 +44,7 @@ locals {
 }
 
 module "vault" {
-  source = "git::https://github.com/libops/terraform-vault-cloudrun?ref=4bc9f15e72be3ae81000087b7f226f40b0714329"
+  source = "git::https://github.com/libops/terraform-vault-cloudrun?ref=baf086deaabe421a50ab5337f260bb2662c376f9"
   providers = {
     docker      = docker
     google      = google
