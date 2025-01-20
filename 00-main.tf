@@ -44,8 +44,7 @@ locals {
 }
 
 module "vault" {
-  # renovate: datasource=git-refs depName=terraform-vault-cloudrun branch=main
-  source = "git::https://github.com/libops/terraform-vault-cloudrun?ref=baf086deaabe421a50ab5337f260bb2662c376f9"
+  source = "git::https://github.com/libops/terraform-vault-cloudrun?ref=0.0.1"
   providers = {
     docker      = docker
     google      = google

@@ -37,18 +37,6 @@
       ],
     },
   ],
-  customManagers: [
-    {
-      customType: 'regex',
-      description: 'Update git ref SHAs in terraform modules',
-      fileMatch: [
-        '^.*\\.tf$',
-      ],
-      matchStrings: [
-        '\\s+# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?) branch=(?<currentValue>.+?)\\s+source = \\"git::(?<packageName>.+?)\\?ref=(?<currentDigest>.+?)\\"$'
-      ],
-    },
-  ],
   labels: [
     'dependencies',
   ],
@@ -58,4 +46,3 @@
     enabled: true,
   },
 }
-
