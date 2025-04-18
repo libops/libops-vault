@@ -2,19 +2,19 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "3.0.2"
+      version = "3.2.0"
     }
     google = {
       source  = "hashicorp/google"
-      version = "6.23.0"
+      version = "6.30.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "6.23.0"
+      version = "6.30.0"
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "4.6.0"
+      version = "4.7.0"
     }
   }
 
@@ -44,7 +44,7 @@ locals {
 }
 
 module "vault" {
-  source = "git::https://github.com/libops/terraform-vault-cloudrun?ref=0.0.4"
+  source = "git::https://github.com/libops/terraform-vault-cloudrun?ref=0.0.5"
   providers = {
     docker      = docker
     google      = google
