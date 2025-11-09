@@ -10,7 +10,7 @@ terraform {
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "6.40.0"
+      version = "7.10.0"
     }
     vault = {
       source  = "hashicorp/vault"
